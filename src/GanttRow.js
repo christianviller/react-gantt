@@ -14,7 +14,9 @@ export default class GanttRow extends Component {
     markerStyle: PropTypes.object,
     steps: PropTypes.array.isRequired,
     templateName: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    onClick: PropTypes.func,
+    onKeyPress: PropTypes.func
   };
   static contextTypes = {
     templates: PropTypes.object.isRequired,
@@ -42,7 +44,9 @@ export default class GanttRow extends Component {
       opacity: 0.5
     },
     templateName: 'default',
-    title: ''
+    title: '',
+    onClick: null,
+    onKeyPress: null
   };
 
   state = {
@@ -51,6 +55,12 @@ export default class GanttRow extends Component {
     activeStep: {},
     markerTime: moment().toDate()
   };
+  onClickHandler(e) {
+    console.log("On click");
+  }
+  onKeyPressHandler(e) {
+    console.log("Keydown")
+  }
 
   getStepFromTime(time) {
     const { steps, templateName } = this.props;
@@ -180,7 +190,7 @@ export default class GanttRow extends Component {
   }
 
   render() {
-    const { title, markerStyle, templateName, steps } = this.props;
+    const { title, markerStyle, templateName, steps, onClick, onKeyPress  } = this.props;
     const { active } = this.state;
     const tdStyle = { whiteSpace: 'nowrap' };
     const { barStyle, barWrapperStyle } = this.calculateBarStyle(
@@ -208,8 +218,10 @@ export default class GanttRow extends Component {
               templateName={templateName}
               steps={steps}
               style={barStyle}
+              onClick={onClick}
+              onKeyPress={onKeyPress}
             />
-            <div
+            {/* <div
               style={{
                 ...markerStyle,
                 height: barStyle.height,
@@ -218,19 +230,23 @@ export default class GanttRow extends Component {
                 marginLeft: `${this.state.mouse.offsetX -
                   parseInt(markerStyle.width, 10) / 2}px`,
                 zIndex: 0,
-                display: active ? 'inherit' : 'none'
+                display: active ? 'inherit' : 'none',
+                pointerEvents: 'none'
               }}
             />
             <div
+              onMouseEnter={this.handleMouseEnter}
+              onMouseLeave={this.handleMouseLeave}
+
               style={{
                 height: barStyle.height,
                 marginTop: `-${barStyle.height}`,
                 position: 'relative',
-                zIndex: 0
+                zIndex: 0,
+                pointerEvents: 'none'
               }}
-              onMouseEnter={this.handleMouseEnter}
-              onMouseLeave={this.handleMouseLeave}
-            />
+
+            /> */}
           </div>
           {this.renderPopup()}
         </td>

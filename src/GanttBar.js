@@ -7,7 +7,9 @@ export default class GanttBar extends Component {
   static propTypes = {
     templateName: PropTypes.string.isRequired,
     steps: PropTypes.array.isRequired,
-    style: PropTypes.object.isRequired
+    style: PropTypes.object.isRequired,
+    onClick: PropTypes.func,
+    onKeyPress: PropTypes.func
   };
   static contextTypes = {
     templates: PropTypes.object.isRequired,
@@ -18,6 +20,10 @@ export default class GanttBar extends Component {
     timelineWidth: PropTypes.number.isRequired,
     activeRow: PropTypes.number
   };
+  static defaultProps = {
+    onClick: null,
+    onKeyPress: null
+  }
 
   getSteps() {
     const { templates } = this.context;
@@ -85,14 +91,14 @@ export default class GanttBar extends Component {
   }
 
   defaultRender() {
-    const { style } = this.props;
+    const { style, onClick, onKeyPress } = this.props;
     const steps = this.getSteps();
     return (
       <div ref="bar" style={{ display: 'flex' }}>
         {_.map(steps, (step, index) => {
           return (
             <div key={`reg${step.name}${index}`}>
-              <div
+              <button
                 style={{
                   ...style,
                   borderTopLeftRadius: step.offTimelineLeft ? '6%' : '0%',
@@ -103,6 +109,9 @@ export default class GanttBar extends Component {
                   backgroundColor: step.color,
                   marginLeft: index === 0 ? `${step.startPixel}px` : '0px'
                 }}
+                onClick={onClick}
+                onKeyPress={onKeyPress}
+
               />
             </div>
           );
@@ -115,36 +124,39 @@ export default class GanttBar extends Component {
     const { dateFormat } = this.context;
     const steps = this.getSteps();
     return (
-      <div ref="bar">
-        {_.map(steps, (step, index) => {
-          return (
-            <div key={`deb${step.name}${index}`}>
-              <div>
-                Start Time: {moment(step.startTime).format(dateFormat)}
-                <br />
-                End Time: {moment(step.endTime).format(dateFormat)}
-                <br />
-                Start Pixel: {step.startPixel}
-                <br />
-                End Pixel: {step.endPixel}
-                <br />
-                Theoretical Width: {step.theoreticalWidth}
-                <br />
-                Display Width: {step.displayWidth}
+      <div ref="bar" >
+        {
+          _.map(steps, (step, index) => {
+            return (
+              <div key={`deb${step.name}${index}`}>
+                <div>
+                  Start Time: {moment(step.startTime).format(dateFormat)}
+                  <br />
+                  End Time: {moment(step.endTime).format(dateFormat)}
+                  <br />
+                  Start Pixel: {step.startPixel}
+                  <br />
+                  End Pixel: {step.endPixel}
+                  <br />
+                  Theoretical Width: {step.theoreticalWidth}
+                  <br />
+                  Display Width: {step.displayWidth}
+                </div>
+                <div
+                  style={{
+                    height: '20px',
+                    width: `${step.displayWidth}px`,
+                    backgroundColor: step.color,
+                    marginLeft: step.startPixel
+                  }}
+                />
+                <hr />
               </div>
-              <div
-                style={{
-                  height: '20px',
-                  width: `${step.displayWidth}px`,
-                  backgroundColor: step.color,
-                  marginLeft: step.startPixel
-                }}
-              />
-              <hr />
-            </div>
-          );
-        })}
-        {this.defaultRender()}
+            );
+          })
+        }
+        {this.defaultRender()
+        }
       </div>
     );
   }

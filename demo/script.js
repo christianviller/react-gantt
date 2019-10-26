@@ -61,6 +61,7 @@ class Demo extends Component {
                 .set({ hour: 0, date: 22, month: 7, year: 2016 })
                 .toDate()
             ]}
+            onClick={() => console.log("Clicked")}
           />
           <GanttRow
             title="Task 3"

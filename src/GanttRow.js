@@ -55,12 +55,6 @@ export default class GanttRow extends Component {
     activeStep: {},
     markerTime: moment().toDate()
   };
-  onClickHandler(e) {
-    console.log("On click");
-  }
-  onKeyPressHandler(e) {
-    console.log("Keydown")
-  }
 
   getStepFromTime(time) {
     const { steps, templateName } = this.props;

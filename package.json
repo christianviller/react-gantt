@@ -29,7 +29,6 @@
     "lint:fix": "eslint ./",
     "start": "npm run lint && parcel demo/index.html -p 8888 --open -d demo/dist",
     "test": "npm run lint",
-    "prepublish": "npm run build",
     "prepare": "npm run build"
   },
   "dependencies": {

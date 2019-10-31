@@ -200,7 +200,7 @@ export default class GanttRow extends Component {
             width: '0px'
           }}
         >
-          {leftAdornment ? leftAdornment : title}
+          {leftAdornment || title}
         </td>
         <td
           style={{

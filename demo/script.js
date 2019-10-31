@@ -34,6 +34,7 @@ class Demo extends Component {
         >
           <GanttRow
             title="Task 1"
+            leftAdornment={<h4>h6 task 1</h4>}
             templateName="myTasks"
             steps={[
               moment()

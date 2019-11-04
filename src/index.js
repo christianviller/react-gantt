@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import GanttTimeline from './GanttTimeline';
+import { Z_BLOCK } from 'zlib';
 
 export { default as GanttRow } from './GanttRow';
 
@@ -22,7 +23,7 @@ export default class ReactGantt extends Component {
     timeFormat: PropTypes.string,
     timelineStyle: PropTypes.object,
     weekFormat: PropTypes.string,
-    yearFormat: PropTypes.string
+    yearFormat: PropTypes.string,
   };
   static childContextTypes = {
     dateFormat: PropTypes.string.isRequired,
@@ -59,7 +60,7 @@ export default class ReactGantt extends Component {
   };
 
   state = {
-    timelineWidth: 0
+    timelineWidth: 500
   };
 
   getChildContext() {
@@ -96,8 +97,12 @@ export default class ReactGantt extends Component {
   }
 
   handleResize() {
+    const { timelineStyle } = this.props;
+    const minWidth = parseInt(timelineStyle.minWidth, 10);
+    const domWidth = this.refs.timeline.offsetWidth;
+    const newWidth = (minWidth > domWidth ? minWidth : domWidth)
     this.setState({ timelineWidth: 0 });
-    this.setState({ timelineWidth: this.refs.timeline.offsetWidth });
+    this.setState({ timelineWidth: newWidth });
   }
 
   render() {

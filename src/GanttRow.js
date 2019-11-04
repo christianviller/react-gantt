@@ -8,6 +8,7 @@ import GanttPopup from './GanttPopup';
 
 @autobind
 export default class GanttRow extends Component {
+
   static propTypes = {
     barStyle: PropTypes.object,
     popupStyle: PropTypes.object,
@@ -138,7 +139,7 @@ export default class GanttRow extends Component {
       });
     }
   }
-
+ 
   calculateBarStyle(barStyle) {
     barStyle = _.clone(barStyle);
     const margin = this.getMargin(barStyle.margin);
@@ -186,7 +187,7 @@ export default class GanttRow extends Component {
   }
 
   render() {
-    const { title, leftAdornment, markerStyle, templateName, steps, onClick, onKeyPress  } = this.props;
+    const { title, leftAdornment, markerStyle, templateName, steps, onClick, onKeyPress } = this.props;
     const { active } = this.state;
     const tdStyle = { whiteSpace: 'nowrap' };
     const { barStyle, barWrapperStyle } = this.calculateBarStyle(

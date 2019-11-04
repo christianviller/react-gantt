@@ -184,7 +184,7 @@ export default function Demo() {
             barStyle={{
               height: '20px',
               marginTop: '3px',
-              marginBottom: '3px',
+              marginBottom: '3px'
             }}
             templateName="myTasks"
             steps={[
@@ -205,7 +205,7 @@ export default function Demo() {
             barStyle={{
               height: '20px',
               marginTop: '3px',
-              marginBottom: '3px',
+              marginBottom: '3px'
             }}
             steps={[
               moment()
@@ -226,7 +226,7 @@ export default function Demo() {
             barStyle={{
               height: '20px',
               marginTop: '3px',
-              marginBottom: '3px',
+              marginBottom: '3px'
             }}
             steps={[
               moment()

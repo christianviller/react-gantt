@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import GanttTimeline from './GanttTimeline';
-import { Z_BLOCK } from 'zlib';
 
 export { default as GanttRow } from './GanttRow';
 
@@ -23,7 +22,7 @@ export default class ReactGantt extends Component {
     timeFormat: PropTypes.string,
     timelineStyle: PropTypes.object,
     weekFormat: PropTypes.string,
-    yearFormat: PropTypes.string,
+    yearFormat: PropTypes.string
   };
   static childContextTypes = {
     dateFormat: PropTypes.string.isRequired,

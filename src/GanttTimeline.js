@@ -10,6 +10,7 @@ export default class GanttTimeline extends Component {
   static contextTypes = {
     dateFormat: PropTypes.string.isRequired,
     timeFormat: PropTypes.string,
+    minuteFormat: PropTypes.string,
     secondFormat: PropTypes.string,
     hourFormat: PropTypes.string,
     dayFormat: PropTypes.string,
@@ -22,38 +23,25 @@ export default class GanttTimeline extends Component {
     timelineWidth: PropTypes.number.isRequired
   };
 
-  getTick(unit, timelineDuration) {
+  getTick() {
     const { style } = this.props;
-    const { leftBound, rightBound, timelineWidth } = this.context;
-    if (!unit) {
-      timelineDuration = moment(rightBound).diff(moment(leftBound), 'seconds');
-      unit = this.getTimespanUnit(timelineDuration);
-    }
-    const tickCount = Math.ceil(timelineDuration / this.units[unit]);
-    const maxTicks = Math.ceil(timelineWidth / parseInt(style.minWidth, 10));
-    if (tickCount > maxTicks) {
-      const unitKeys = _.keys(this.units);
-      const nextUnitIndex = unitKeys.indexOf(unit) + 1;
-      if (unitKeys.length > nextUnitIndex) {
-        unit = unitKeys[nextUnitIndex];
-        return this.getTick(unit, timelineDuration);
-      }
-    }
-    return {
-      width: this.durationToWidth(this.units[unit]),
-      unit,
-      count: tickCount
-    };
-  }
+    const { leftBound, rightBound } = this.context;
+    const timelineDuration = moment(rightBound).diff(moment(leftBound), 'seconds');
 
-  getTimespanUnit(duration) {
-    if (duration / this.units.year >= 3) return 'year';
-    if (duration / this.units.month >= 3) return 'month';
-    if (duration / this.units.week >= 3) return 'week';
-    if (duration / this.units.day >= 3) return 'day';
-    if (duration / this.units.hour >= 3) return 'hour';
-    if (duration / this.units.minute >= 3) return 'minute';
-    return 'second';
+    let count = 0;
+    let i = 1;
+    while(count < style.maxTicks && i++ < this.preferredTicks.length){
+      count = Math.ceil(timelineDuration / this.preferredTicks[i].seconds)
+    }
+    const tick = this.preferredTicks[i-1];
+    count = Math.ceil(timelineDuration / tick.seconds)
+
+    return{
+      width: this.durationToWidth(tick.seconds),
+      step: tick.seconds,
+      unit: tick.unit,
+      count
+    }
   }
 
   getTimeFormat(unit) {
@@ -76,14 +64,20 @@ export default class GanttTimeline extends Component {
     return null;
   }
 
-  units = {
-    minute: 60,
-    hour: 3600,
-    day: 86400,
-    week: 604800,
-    month: 2628000,
-    year: 31535965.4396976
-  };
+  preferredTicks = [
+    { seconds: 31535965.4396976, unit: 'year', absolute: false },
+    { seconds: 2628000, unit: 'month', absolute: false },
+    { seconds: 604800, unit: 'week', absolute: false },
+    { seconds: 86400, unit: 'day', absolute: false },
+    { seconds: 3600, unit: 'hour', absolute: true },
+    { seconds: 1800, unit: 'minute', absolute: true }, // 30 min
+    { seconds: 1200, unit: 'minute', absolute: true }, // 20 min
+    { seconds: 900, unit: 'minute', absolute: true }, // 15 min
+    { seconds: 600, unit: 'minute', absolute: true }, // 10 min
+    { seconds: 300, unit: 'minute', absolute: true }, // 5 min
+    { seconds: 120, unit: 'minute', absolute: true }, // 2 min
+    { seconds: 60, unit: 'minute', absolute: true } // 1 min
+  ]
 
   durationToWidth(duration) {
     const { leftBound, rightBound, timelineWidth } = this.context;
@@ -92,24 +86,18 @@ export default class GanttTimeline extends Component {
     return timelineWidth * percentage;
   }
 
-  widthToDuration(width) {
-    const { leftBound, rightBound, timelineWidth } = this.context;
-    const timelineDuration = moment(rightBound).diff(leftBound, 'seconds');
-    const pixelPerSecond = timelineDuration / timelineWidth;
-    return pixelPerSecond * width;
-  }
-
   debugRender() {
-    const { leftBound, rightBound, dateFormat, timelineWidth } = this.context;
+    const { leftBound, rightBound, timelineWidth } = this.context;
     const tick = this.getTick();
+
     return (
       <div>
-        <div>
+        <div align="left">
           Timeline Width: {timelineWidth}
           <br />
-          Left Bound: {moment(leftBound).format(dateFormat)}
+          Left Bound: {moment(leftBound).format("YYYY-MM-DD HH:mm:ss")}
           <br />
-          Right Bound: {moment(rightBound).format(dateFormat)}
+          Right Bound: {moment(rightBound).format("YYYY-MM-DD HH:mm:ss")}
           <br />
           Tick Unit: {tick.unit}
           <br />
@@ -161,16 +149,15 @@ export default class GanttTimeline extends Component {
 
   renderTickLabel(tick, index) {
     const { leftBound } = this.context;
-    const tickTime = moment(leftBound).add(
-      this.widthToDuration(tick.width) * index,
-      'seconds'
-    );
+    const tickTime = moment(leftBound).add((index * tick.step), 'seconds');
     const format = this.getTimeFormat(tick.unit);
     return tickTime.format(format);
   }
 
   render() {
-    if (this.context.debug) return this.debugRender();
+    if (this.context.debug) {
+      return this.debugRender();
+    }
     return this.defaultRender();
   }
 }

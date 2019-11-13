@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import ReactGantt, { GanttRow } from '../src';
+import MinuteDemo from './MinuteDemo';
 
 
 function TabPanel(props) {
@@ -56,6 +57,7 @@ const useStyles = makeStyles(theme => ({
 export default function Demo() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -66,7 +68,7 @@ export default function Demo() {
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
+          <Tab label="Minute Demo" {...a11yProps(1)} />
           <Tab label="Item Three" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
@@ -126,7 +128,7 @@ export default function Demo() {
                 .set({ hour: 0, date: 22, month: 7, year: 2016 })
                 .toDate()
             ]}
-            onClick={() => console.log("Clicked")}
+            onClick={null}
           />
           <GanttRow
             title="Task 3"
@@ -149,101 +151,7 @@ export default function Demo() {
         </ReactGantt>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ReactGantt
-          templates={{
-            myTasks: {
-              title: 'My Tasks',
-              steps: [
-                {
-                  name: 'Task Phase One',
-                  color: '#0099FF'
-                },
-                {
-                  name: 'Task Phase Two',
-                  color: '#FF9900'
-                }
-              ]
-            }
-          }}
-        
-          timelineStyle={{
-            minWidth: '600px'
-          }}
-          leftBound={moment()
-            .set({ hour: 0, date: 30, month: 5, year: 2016 })
-            .toDate()}
-          rightBound={moment()
-            .set({ hour: 0, date: 29, month: 8, year: 2016 })
-            .toDate()}
-          dateFormat="YYYY-MM-DD"
-          debug={false}
-        >
-          <GanttRow
-            title="Task 1"
-            leftAdornment={<h4>h6 task 1</h4>}
-            barStyle={{
-              height: '20px',
-              marginTop: '3px',
-              marginBottom: '3px'
-            }}
-            templateName="myTasks"
-            steps={[
-              moment()
-                .set({ hour: 0, date: 1, month: 6, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 4, month: 8, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 17, month: 8, year: 2016 })
-                .toDate()
-            ]}
-          />
-          <GanttRow
-            title="Task 2"
-            templateName="myTasks"
-            barStyle={{
-              height: '20px',
-              marginTop: '3px',
-              marginBottom: '3px'
-            }}
-            steps={[
-              moment()
-                .set({ hour: 0, date: 27, month: 2, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 9, month: 7, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 22, month: 7, year: 2016 })
-                .toDate()
-            ]}
-            onClick={() => console.log("Clicked")}
-          />
-          <GanttRow
-            title="Task 3"
-            templateName="myTasks"
-            barStyle={{
-              height: '20px',
-              marginTop: '3px',
-              marginBottom: '3px'
-            }}
-            steps={[
-              moment()
-                .set({ hour: 0, date: 12, month: 6, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 2, month: 7, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 2, month: 8, year: 2016 })
-                .toDate(),
-              moment()
-                .set({ hour: 0, date: 24, month: 9, year: 2016 })
-                .toDate()
-            ]}
-          />
-        </ReactGantt>
+        <MinuteDemo />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ReactGantt
@@ -301,7 +209,7 @@ export default function Demo() {
                 .set({ hour: 0, date: 22, month: 7, year: 2016 })
                 .toDate()
             ]}
-            onClick={() => console.log("Clicked")}
+            onClick={null}
           />
           <GanttRow
             title="Task 3"

@@ -12,7 +12,7 @@ export default class GanttRow extends Component {
   static propTypes = {
     barStyle: PropTypes.object,
     popupStyle: PropTypes.object,
-    markerStyle: PropTypes.object,
+    // markerStyle: PropTypes.object,
     steps: PropTypes.array.isRequired,
     templateName: PropTypes.string,
     title: PropTypes.string,
@@ -40,11 +40,11 @@ export default class GanttRow extends Component {
       boxShadow: '0px 0px 15px 0px rgba(0,0,0,0.75)',
       borderRadius: '5px'
     },
-    markerStyle: {
-      width: '40px',
-      backgroundColor: '#000000',
-      opacity: 0.5
-    },
+    // markerStyle: {
+    //   width: '40px',
+    //   backgroundColor: '#000000',
+    //   opacity: 0.5
+    // },
     templateName: 'default',
     title: '',
     leftAdornment: null,
@@ -187,8 +187,8 @@ export default class GanttRow extends Component {
   }
 
   render() {
-    const { title, leftAdornment, markerStyle, templateName, steps, onClick, onKeyPress } = this.props;
-    const { active } = this.state;
+    const { title, leftAdornment,  templateName, steps, onClick, onKeyPress } = this.props;
+    // const { active } = this.state;
     const tdStyle = { whiteSpace: 'nowrap' };
     const { barStyle, barWrapperStyle } = this.calculateBarStyle(
       this.props.barStyle

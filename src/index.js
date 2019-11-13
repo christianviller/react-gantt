@@ -46,14 +46,18 @@ export default class ReactGantt extends Component {
     debug: false,
     hourFormat: 'HH',
     leftBound: moment().toDate(),
-    minuteFormat: 'HH:MM',
+    minuteFormat: 'HH:mm',
     monthFormat: 'YY-MM-DD',
     rightBound: moment().toDate(),
-    secondFormat: 'HH:MM:SS',
+    secondFormat: 'HH:mm:ss',
     style: {},
     templates: {},
-    timeFormat: 'YY-MM-DD HH:MM',
-    timelineStyle: { minWidth: '60px' },
+    timeFormat: 'YY-MM-DD HH:mm',
+    timelineStyle: {
+      minTickWidth: '60px',
+      width: '600px',
+      maxTicks: 10
+    },
     weekFormat: 'YY-MM-DD',
     yearFormat: 'YY-MM-DD'
   };
@@ -97,15 +101,12 @@ export default class ReactGantt extends Component {
 
   handleResize() {
     const { timelineStyle } = this.props;
-    const minWidth = parseInt(timelineStyle.minWidth, 10);
-    const domWidth = this.refs.timeline.offsetWidth;
-    const newWidth = (minWidth > domWidth ? minWidth : domWidth)
-    this.setState({ timelineWidth: 0 });
-    this.setState({ timelineWidth: newWidth });
+    this.setState({ timelineWidth: parseInt(timelineStyle.width, 10)});
   }
 
   render() {
     const thStyle = { whiteSpace: 'nowrap' };
+    const { timelineStyle } = this.props;
     return (
       <div style={this.props.style}>
         <table style={{ width: '100%' }} cellSpacing={0}>
@@ -121,7 +122,7 @@ export default class ReactGantt extends Component {
                 ref="timeline"
                 style={{
                   ...thStyle,
-                  width: '100%'
+                  width: timelineStyle.width
                 }}
               >
                 <GanttTimeline

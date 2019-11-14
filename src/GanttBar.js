@@ -90,6 +90,17 @@ export default class GanttBar extends Component {
     return null;
   }
 
+  durationLabel(duration){
+    if(duration < 60){
+      return "" + duration + "s"
+    }
+    const minutes = duration/60;
+    if(minutes < 200){
+      return "" + minutes + "m"
+    }
+    return duration
+  }
+
   defaultRender() {
     const { style, onClick, onKeyPress } = this.props;
     const steps = this.getSteps();
@@ -111,8 +122,8 @@ export default class GanttBar extends Component {
                 }}
                 onClick={onClick}
                 onKeyPress={onKeyPress}
+              >{this.durationLabel(step.duration)}</button>
 
-              />
             </div>
           );
         })}

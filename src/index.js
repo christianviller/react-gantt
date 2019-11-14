@@ -149,10 +149,10 @@ export default class ReactGantt extends Component {
                   width: width
                 }}
               >
-                <GanttTimeline
+                {/* <GanttTimeline
                   style={this.props.timelineStyle}
                   rows={this.props.children}
-                />
+                /> */}
               </td>
             </tr>
           </tbody>

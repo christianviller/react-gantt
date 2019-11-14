@@ -25,11 +25,6 @@ export default function MinuteDemo() {
           }
         }}
 
-        timelineStyle={{
-          width: '600px',
-          minTickWidth: '100px',
-          maxTicks: 10
-        }}
         leftBound={startDate}
         rightBound={getMinutesAdd(120)}
         debug={false}

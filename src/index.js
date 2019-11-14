@@ -20,6 +20,7 @@ export default class ReactGantt extends Component {
     style: PropTypes.object,
     templates: PropTypes.object,
     timeFormat: PropTypes.string,
+    width: PropTypes.string,
     timelineStyle: PropTypes.object,
     weekFormat: PropTypes.string,
     yearFormat: PropTypes.string
@@ -53,10 +54,16 @@ export default class ReactGantt extends Component {
     style: {},
     templates: {},
     timeFormat: 'YY-MM-DD HH:mm',
+    width: '600px',
     timelineStyle: {
       minTickWidth: '60px',
-      width: '600px',
-      maxTicks: 10
+      maxTicks: 10,
+      tickStyle: '1px solid rgba(224, 224, 224, 1)',
+      labelFont: {
+        fontFamily: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+        fontSize: '0.75rem',
+        fontWeight: '500'
+      }
     },
     weekFormat: 'YY-MM-DD',
     yearFormat: 'YY-MM-DD'
@@ -100,13 +107,13 @@ export default class ReactGantt extends Component {
   }
 
   handleResize() {
-    const { timelineStyle } = this.props;
-    this.setState({ timelineWidth: parseInt(timelineStyle.width, 10)});
+    const { width } = this.props;
+    this.setState({ timelineWidth: parseInt(width, 10) });
   }
 
   render() {
     const thStyle = { whiteSpace: 'nowrap' };
-    const { timelineStyle } = this.props;
+    const { width } = this.props;
     return (
       <div style={this.props.style}>
         <table style={{ width: '100%' }} cellSpacing={0}>
@@ -122,17 +129,33 @@ export default class ReactGantt extends Component {
                 ref="timeline"
                 style={{
                   ...thStyle,
-                  width: timelineStyle.width
+                  width: width
+                }}
+              />
+            </tr>
+          </thead>
+          <tbody>{this.props.children}
+            <tr>
+              <td
+                style={{
+                  ...thStyle,
+                  width: '0px'
+                }}
+              />
+              <td
+                ref="timeline"
+                style={{
+                  ...thStyle,
+                  width: width
                 }}
               >
                 <GanttTimeline
                   style={this.props.timelineStyle}
                   rows={this.props.children}
                 />
-              </th>
+              </td>
             </tr>
-          </thead>
-          <tbody>{this.props.children}</tbody>
+          </tbody>
         </table>
       </div>
     );

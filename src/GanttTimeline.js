@@ -30,13 +30,13 @@ export default class GanttTimeline extends Component {
 
     let count = 0;
     let i = 1;
-    while(count < style.maxTicks && i++ < this.preferredTicks.length){
+    while (count < style.maxTicks && i++ < this.preferredTicks.length) {
       count = Math.ceil(timelineDuration / this.preferredTicks[i].seconds)
     }
-    const tick = this.preferredTicks[i-1];
+    const tick = this.preferredTicks[i - 1];
     count = Math.ceil(timelineDuration / tick.seconds)
 
-    return{
+    return {
       width: this.durationToWidth(tick.seconds),
       step: tick.seconds,
       unit: tick.unit,
@@ -113,7 +113,7 @@ export default class GanttTimeline extends Component {
   defaultRender() {
     const style = _.clone(this.props.style);
     const tick = this.getTick();
-    const tickWidth = _.clone(parseInt(style.tickWidth, 10)) || 2;
+    const tickWidth = _.clone(parseInt(style.tickStyle, 10)) || 2;
     const paddingLeft = _.clone(parseInt(style.paddingLeft, 10)) || 4;
     delete style.paddingLeft;
     return (
@@ -130,7 +130,7 @@ export default class GanttTimeline extends Component {
               style={{
                 ...style,
                 height: '20px',
-                borderLeft: `${tickWidth}px solid black`,
+                borderLeft: style.tickStyle,
                 width: `${tick.width - paddingLeft - tickWidth}px`,
                 float: 'left',
                 margin: '0px',
@@ -139,7 +139,9 @@ export default class GanttTimeline extends Component {
                 paddingLeft: `${paddingLeft}px`
               }}
             >
-              {this.renderTickLabel(tick, index)}
+              <div style={style.labelFont}>
+                {this.renderTickLabel(tick, index)}
+              </div>
             </div>
           );
         })}

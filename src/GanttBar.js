@@ -90,15 +90,20 @@ export default class GanttBar extends Component {
     return null;
   }
 
-  durationLabel(duration){
-    if(duration < 60){
-      return "" + duration + "s"
+  durationLabel(duration) {
+    if (duration < 60) {
+      return `${duration}s`
     }
-    const minutes = duration/60;
-    if(minutes < 200){
-      return "" + minutes + "m"
+    const minutes = duration / 60;
+    if (minutes < 200) {
+      return `${minutes}m`
     }
-    return duration
+    const hours = minutes / 60;
+    if (hours < 48) {
+      return `${hours}h`
+    }
+    const days = hours / 24;
+    return `${days}d`
   }
 
   defaultRender() {
@@ -122,7 +127,8 @@ export default class GanttBar extends Component {
                 }}
                 onClick={onClick}
                 onKeyPress={onKeyPress}
-              >{this.durationLabel(step.duration)}</button>
+              >{this.durationLabel(step.duration)}
+              </button>
 
             </div>
           );

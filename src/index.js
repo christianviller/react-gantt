@@ -11,6 +11,7 @@ export default class ReactGantt extends Component {
     dateFormat: PropTypes.string,
     dayFormat: PropTypes.string,
     debug: PropTypes.bool,
+    enableTimeline: PropTypes.bool,
     hourFormat: PropTypes.string,
     leftBound: PropTypes.object,
     minuteFormat: PropTypes.string,
@@ -55,6 +56,7 @@ export default class ReactGantt extends Component {
     templates: {},
     timeFormat: 'YY-MM-DD HH:mm',
     width: '600px',
+    enableTimeline: false,
     timelineStyle: {
       minTickWidth: '60px',
       maxTicks: 10,
@@ -113,7 +115,7 @@ export default class ReactGantt extends Component {
 
   render() {
     const thStyle = { whiteSpace: 'nowrap' };
-    const { width } = this.props;
+    const { width, enableTimeline } = this.props;
     return (
       <div style={this.props.style}>
         <table style={{ width: '100%' }} cellSpacing={0}>
@@ -129,7 +131,7 @@ export default class ReactGantt extends Component {
                 ref="timeline"
                 style={{
                   ...thStyle,
-                  width: width
+                  width
                 }}
               />
             </tr>
@@ -146,13 +148,15 @@ export default class ReactGantt extends Component {
                 ref="timeline"
                 style={{
                   ...thStyle,
-                  width: width
+                  width
                 }}
               >
-                {/* <GanttTimeline
-                  style={this.props.timelineStyle}
-                  rows={this.props.children}
-                /> */}
+                {enableTimeline &&
+                  <GanttTimeline
+                    style={this.props.timelineStyle}
+                    rows={this.props.children}
+                  />
+                }
               </td>
             </tr>
           </tbody>

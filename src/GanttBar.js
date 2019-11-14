@@ -45,6 +45,7 @@ export default class GanttBar extends Component {
     const startPixel = this.timeToPixel(stepStartTime);
     const endPixel = this.timeToPixel(stepEndTime);
     const displayWidth = endPixel - startPixel;
+    const displayBarLabel = template.displayBarLabel && true;
     let offTimelineLeft = false;
     let offTimelineRight = false;
     if (moment(stepStartTime).diff(moment(leftBound), 'seconds') < 0) {
@@ -60,6 +61,7 @@ export default class GanttBar extends Component {
       theoreticalWidth,
       displayWidth,
       startPixel,
+      displayBarLabel,
       endPixel,
       offTimelineLeft,
       offTimelineRight,
@@ -107,7 +109,7 @@ export default class GanttBar extends Component {
   }
 
   defaultRender() {
-    const { style, onClick, onKeyPress } = this.props;
+    const { style, onClick, onKeyPress } = this.props;    
     const steps = this.getSteps();
     return (
       <div ref="bar" style={{ display: 'flex' }}>
@@ -127,7 +129,7 @@ export default class GanttBar extends Component {
                 }}
                 onClick={onClick}
                 onKeyPress={onKeyPress}
-              >{this.durationLabel(step.duration)}
+              >{step.displayBarLabel && this.durationLabel(step.duration)}
               </button>
 
             </div>

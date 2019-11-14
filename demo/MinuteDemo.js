@@ -12,6 +12,7 @@ export default function MinuteDemo() {
         templates={{
           myTasks: {
             title: 'My Tasks',
+            displayBarLabel: true,
             steps: [
               {
                 name: 'Task Phase One',

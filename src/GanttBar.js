@@ -112,7 +112,7 @@ export default class GanttBar extends Component {
 
   defaultRender() {
     const { style, onClick, onKeyPress, id } = this.props;  
-    const idPrefix = (id === "" ? id : `${id}-`)  
+    const idPrefix = (id === "" ? `step-` : `${id}-step-`)  
     const steps = this.getSteps();
     return (
       <div ref="bar" style={{ display: 'flex' }}>

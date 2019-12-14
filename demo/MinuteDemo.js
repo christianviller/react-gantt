@@ -32,6 +32,7 @@ export default function MinuteDemo() {
       >
         <GanttRow
           title="Task 1"
+          id="row-one"
           barStyle={{
             height: '20px',
             marginTop: '3px',
@@ -47,6 +48,7 @@ export default function MinuteDemo() {
         <GanttRow
           title="Task 2"
           templateName="myTasks"
+          id="row-two"
           barStyle={{
             height: '20px',
             marginTop: '3px',
@@ -61,6 +63,7 @@ export default function MinuteDemo() {
         />
         <GanttRow
           title="Task 3"
+          id="row-three"
           templateName="myTasks"
           barStyle={{
             height: '20px',

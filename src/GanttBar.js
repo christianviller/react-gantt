@@ -8,6 +8,7 @@ export default class GanttBar extends Component {
     templateName: PropTypes.string.isRequired,
     steps: PropTypes.array.isRequired,
     style: PropTypes.object.isRequired,
+    id: PropTypes.string,
     onClick: PropTypes.func,
     onKeyPress: PropTypes.func
   };
@@ -22,7 +23,8 @@ export default class GanttBar extends Component {
   };
   static defaultProps = {
     onClick: null,
-    onKeyPress: null
+    onKeyPress: null,
+    id: 'gantt-bar'
   }
 
   getSteps() {
@@ -109,7 +111,8 @@ export default class GanttBar extends Component {
   }
 
   defaultRender() {
-    const { style, onClick, onKeyPress } = this.props;    
+    const { style, onClick, onKeyPress, id } = this.props;  
+    const idPrefix = (id === "" ? id : `${id}-`)  
     const steps = this.getSteps();
     return (
       <div ref="bar" style={{ display: 'flex' }}>
@@ -117,6 +120,7 @@ export default class GanttBar extends Component {
           return (
             <div key={`reg${step.name}${index}`}>
               <button
+                id={`${idPrefix}${index}`}
                 style={{
                   ...style,
                   borderTopLeftRadius: step.offTimelineLeft ? '6%' : '0%',

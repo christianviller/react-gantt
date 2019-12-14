@@ -24,7 +24,8 @@ export default class ReactGantt extends Component {
     width: PropTypes.string,
     timelineStyle: PropTypes.object,
     weekFormat: PropTypes.string,
-    yearFormat: PropTypes.string
+    yearFormat: PropTypes.string,
+    id: PropTypes.string
   };
   static childContextTypes = {
     dateFormat: PropTypes.string.isRequired,
@@ -52,6 +53,7 @@ export default class ReactGantt extends Component {
     monthFormat: 'YY-MM-DD',
     rightBound: moment().toDate(),
     secondFormat: 'HH:mm:ss',
+    id: 'react-gantt',
     style: {},
     templates: {},
     timeFormat: 'YY-MM-DD HH:mm',
@@ -115,10 +117,10 @@ export default class ReactGantt extends Component {
 
   render() {
     const thStyle = { whiteSpace: 'nowrap' };
-    const { width, enableTimeline } = this.props;
+    const { width, enableTimeline, id } = this.props;
     return (
       <div style={this.props.style}>
-        <table style={{ width: '100%' }} cellSpacing={0}>
+        <table id={id} style={{ width: '100%' }} cellSpacing={0}>
           <thead>
             <tr>
               <th

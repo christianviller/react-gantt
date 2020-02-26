@@ -4,24 +4,21 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 export default class GanttTimeline extends Component {
-  static propTypes = {
-    style: PropTypes.object.isRequired
-  };
-  static contextTypes = {
-    dateFormat: PropTypes.string.isRequired,
-    timeFormat: PropTypes.string,
-    minuteFormat: PropTypes.string,
-    secondFormat: PropTypes.string,
-    hourFormat: PropTypes.string,
-    dayFormat: PropTypes.string,
-    weekFormat: PropTypes.string,
-    monthFormat: PropTypes.string,
-    yearFormat: PropTypes.string,
-    debug: PropTypes.bool.isRequired,
-    leftBound: PropTypes.object.isRequired,
-    rightBound: PropTypes.object.isRequired,
-    timelineWidth: PropTypes.number.isRequired
-  };
+
+  preferredTicks = [
+    { seconds: 31535965.4396976, unit: 'year', absolute: false },
+    { seconds: 2628000, unit: 'month', absolute: false },
+    { seconds: 604800, unit: 'week', absolute: false },
+    { seconds: 86400, unit: 'day', absolute: false },
+    { seconds: 3600, unit: 'hour', absolute: true },
+    { seconds: 1800, unit: 'minute', absolute: true }, // 30 min
+    { seconds: 1200, unit: 'minute', absolute: true }, // 20 min
+    { seconds: 900, unit: 'minute', absolute: true }, // 15 min
+    { seconds: 600, unit: 'minute', absolute: true }, // 10 min
+    { seconds: 300, unit: 'minute', absolute: true }, // 5 min
+    { seconds: 120, unit: 'minute', absolute: true }, // 2 min
+    { seconds: 60, unit: 'minute', absolute: true } // 1 min
+  ]
 
   getTick() {
     const { style } = this.props;
@@ -45,39 +42,26 @@ export default class GanttTimeline extends Component {
   }
 
   getTimeFormat(unit) {
+    const {context} = this;
     switch (unit) {
       case 'second':
-        return this.context.secondFormat;
+        return context.secondFormat;
       case 'minute':
-        return this.context.minuteFormat;
+        return context.minuteFormat;
       case 'hour':
-        return this.context.hourFormat;
+        return context.hourFormat;
       case 'day':
-        return this.context.dayFormat;
+        return context.dayFormat;
       case 'week':
-        return this.context.weekFormat;
+        return context.weekFormat;
       case 'month':
-        return this.context.monthFormat;
+        return context.monthFormat;
       case 'year':
-        return this.context.yearFormat;
+        return context.yearFormat;
     }
     return null;
   }
 
-  preferredTicks = [
-    { seconds: 31535965.4396976, unit: 'year', absolute: false },
-    { seconds: 2628000, unit: 'month', absolute: false },
-    { seconds: 604800, unit: 'week', absolute: false },
-    { seconds: 86400, unit: 'day', absolute: false },
-    { seconds: 3600, unit: 'hour', absolute: true },
-    { seconds: 1800, unit: 'minute', absolute: true }, // 30 min
-    { seconds: 1200, unit: 'minute', absolute: true }, // 20 min
-    { seconds: 900, unit: 'minute', absolute: true }, // 15 min
-    { seconds: 600, unit: 'minute', absolute: true }, // 10 min
-    { seconds: 300, unit: 'minute', absolute: true }, // 5 min
-    { seconds: 120, unit: 'minute', absolute: true }, // 2 min
-    { seconds: 60, unit: 'minute', absolute: true } // 1 min
-  ]
 
   durationToWidth(duration) {
     const { leftBound, rightBound, timelineWidth } = this.context;
@@ -93,17 +77,23 @@ export default class GanttTimeline extends Component {
     return (
       <div>
         <div align="left">
-          Timeline Width: {timelineWidth}
+          Timeline Width: 
+          {timelineWidth}
           <br />
-          Left Bound: {moment(leftBound).format("YYYY-MM-DD HH:mm:ss")}
+          Left Bound: 
+          {moment(leftBound).format("YYYY-MM-DD HH:mm:ss")}
           <br />
-          Right Bound: {moment(rightBound).format("YYYY-MM-DD HH:mm:ss")}
+          Right Bound: 
+          {moment(rightBound).format("YYYY-MM-DD HH:mm:ss")}
           <br />
-          Tick Unit: {tick.unit}
+          Tick Unit: 
+          {tick.unit}
           <br />
-          Tick Width: {tick.width}
+          Tick Width: 
+          {tick.width}
           <br />
-          Tick Count: {tick.count}
+          Tick Count: 
+          {tick.count}
         </div>
         <div>{this.defaultRender()}</div>
       </div>
@@ -111,7 +101,7 @@ export default class GanttTimeline extends Component {
   }
 
   defaultRender() {
-    const style = _.clone(this.props.style);
+    const {style} = {...(this.props)};    
     const tick = this.getTick();
     const tickWidth = _.clone(parseInt(style.tickStyle, 10)) || 2;
     const paddingLeft = _.clone(parseInt(style.paddingLeft, 10)) || 4;
@@ -157,9 +147,30 @@ export default class GanttTimeline extends Component {
   }
 
   render() {
-    if (this.context.debug) {
+    const {debug} = this.context;
+    if (debug) {
       return this.debugRender();
     }
     return this.defaultRender();
   }
 }
+
+GanttTimeline.propTypes = {
+  style: PropTypes.object.isRequired
+};
+
+GanttTimeline.contextTypes = {
+  dateFormat: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string,
+  minuteFormat: PropTypes.string,
+  secondFormat: PropTypes.string,
+  hourFormat: PropTypes.string,
+  dayFormat: PropTypes.string,
+  weekFormat: PropTypes.string,
+  monthFormat: PropTypes.string,
+  yearFormat: PropTypes.string,
+  debug: PropTypes.bool.isRequired,
+  leftBound: PropTypes.object.isRequired,
+  rightBound: PropTypes.object.isRequired,
+  timelineWidth: PropTypes.number.isRequired
+};

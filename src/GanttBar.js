@@ -3,29 +3,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
+
+
 export default class GanttBar extends Component {
-  static propTypes = {
-    templateName: PropTypes.string.isRequired,
-    steps: PropTypes.array.isRequired,
-    style: PropTypes.object.isRequired,
-    id: PropTypes.string,
-    onClick: PropTypes.func,
-    onKeyPress: PropTypes.func
-  };
-  static contextTypes = {
-    templates: PropTypes.object.isRequired,
-    dateFormat: PropTypes.string.isRequired,
-    debug: PropTypes.bool.isRequired,
-    leftBound: PropTypes.object.isRequired,
-    rightBound: PropTypes.object.isRequired,
-    timelineWidth: PropTypes.number.isRequired,
-    activeRow: PropTypes.number
-  };
-  static defaultProps = {
-    onClick: null,
-    onKeyPress: null,
-    id: 'gantt-bar'
-  }
+
 
   getSteps() {
     const { templates } = this.context;
@@ -111,8 +92,8 @@ export default class GanttBar extends Component {
   }
 
   defaultRender() {
-    const { style, onClick, onKeyPress, id } = this.props;  
-    const idPrefix = (id === "" ? `step-` : `${id}-step-`)  
+    const { style, onClick, onKeyPress, id } = this.props;
+    const idPrefix = (id === "" ? `step-` : `${id}-step-`)
     const steps = this.getSteps();
     return (
       <div ref="bar" style={{ display: 'flex' }}>
@@ -120,6 +101,7 @@ export default class GanttBar extends Component {
           return (
             <div key={`reg${step.name}${index}`}>
               <button
+                type="button"
                 id={`${idPrefix}${index}`}
                 style={{
                   ...style,
@@ -133,7 +115,8 @@ export default class GanttBar extends Component {
                 }}
                 onClick={onClick}
                 onKeyPress={onKeyPress}
-              >{step.displayBarLabel && this.durationLabel(step.duration)}
+              >
+                {step.displayBarLabel && this.durationLabel(step.duration)}
               </button>
 
             </div>
@@ -147,23 +130,29 @@ export default class GanttBar extends Component {
     const { dateFormat } = this.context;
     const steps = this.getSteps();
     return (
-      <div ref="bar" >
+      <div ref="bar">
         {
           _.map(steps, (step, index) => {
             return (
               <div key={`deb${step.name}${index}`}>
                 <div>
-                  Start Time: {moment(step.startTime).format(dateFormat)}
+                  Start Time: 
+                  {moment(step.startTime).format(dateFormat)}
                   <br />
-                  End Time: {moment(step.endTime).format(dateFormat)}
+                  End Time: 
+                  {moment(step.endTime).format(dateFormat)}
                   <br />
-                  Start Pixel: {step.startPixel}
+                  Start Pixel: 
+                  {step.startPixel}
                   <br />
-                  End Pixel: {step.endPixel}
+                  End Pixel: 
+                  {step.endPixel}
                   <br />
-                  Theoretical Width: {step.theoreticalWidth}
+                  Theoretical Width: 
+                  {step.theoreticalWidth}
                   <br />
-                  Display Width: {step.displayWidth}
+                  Display Width: 
+                  {step.displayWidth}
                 </div>
                 <div
                   style={{
@@ -178,14 +167,40 @@ export default class GanttBar extends Component {
             );
           })
         }
-        {this.defaultRender()
-        }
+        {this.defaultRender()}
       </div>
     );
   }
 
   render() {
-    if (this.context.debug) return this.debugRender();
+    const {debug} = this.context
+    if (debug) return this.debugRender();
     return this.defaultRender();
   }
+}
+
+
+GanttBar.propTypes = {
+  templateName: PropTypes.string.isRequired,
+  steps: PropTypes.array.isRequired,
+  style: PropTypes.object.isRequired,
+  id: PropTypes.string,
+  onClick: PropTypes.func,
+  onKeyPress: PropTypes.func
+};
+
+GanttBar.contextTypes = {
+  templates: PropTypes.object.isRequired,
+  dateFormat: PropTypes.string.isRequired,
+  debug: PropTypes.bool.isRequired,
+  leftBound: PropTypes.object.isRequired,
+  rightBound: PropTypes.object.isRequired,
+  timelineWidth: PropTypes.number.isRequired,
+  activeRow: PropTypes.number
+};
+
+GanttBar.defaultProps = {
+  onClick: null,
+  onKeyPress: null,
+  id: 'gantt-bar'
 }

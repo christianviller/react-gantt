@@ -9,12 +9,13 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import ReactGantt, { GanttRow } from '../src';
+import ReactGantt from '../src';
+import GanttRow from '../src/GanttRow'
 import MinuteDemo from './MinuteDemo';
 
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
     <Typography
@@ -23,7 +24,6 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
     >
       <Box p={3}>{children}</Box>
     </Typography>
@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 export default function Demo() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -67,9 +67,9 @@ export default function Demo() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Minute Demo" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Item One" {...a11yProps(0)} /> {/* eslint-disable-line */}
+          <Tab label="Minute Demo" {...a11yProps(1)} /> {/* eslint-disable-line */}
+          <Tab label="Item Three" {...a11yProps(2)} /> {/* eslint-disable-line */}
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>

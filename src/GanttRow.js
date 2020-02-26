@@ -7,59 +7,16 @@ import GanttBar from './GanttBar';
 import GanttPopup from './GanttPopup';
 
 @autobind
-export default class GanttRow extends Component {
-
-  static propTypes = {
-    barStyle: PropTypes.object,
-    popupStyle: PropTypes.object,
-    // markerStyle: PropTypes.object,
-    steps: PropTypes.array.isRequired,
-    templateName: PropTypes.string,
-    title: PropTypes.string,
-    id: PropTypes.string,
-    leftAdornment: PropTypes.object,
-    onClick: PropTypes.func,
-    onKeyPress: PropTypes.func
-  };
-  static contextTypes = {
-    templates: PropTypes.object.isRequired,
-    dateFormat: PropTypes.string.isRequired,
-    leftBound: PropTypes.object.isRequired,
-    rightBound: PropTypes.object.isRequired,
-    timelineWidth: PropTypes.number.isRequired,
-    debug: PropTypes.bool.isRequired
-  };
-  static defaultProps = {
-    barStyle: {
-      height: '80px',
-      marginTop: '10px',
-      marginBottom: '10px'
-    },
-    popupStyle: {
-      backgroundColor: 'rgba(255, 255, 255, 0.85)',
-      padding: '15px',
-      boxShadow: '0px 0px 15px 0px rgba(0,0,0,0.75)',
-      borderRadius: '5px'
-    },
-    id: '',
-    // markerStyle: {
-    //   width: '40px',
-    //   backgroundColor: '#000000',
-    //   opacity: 0.5
-    // },
-    templateName: 'default',
-    title: '',
-    leftAdornment: null,
-    onClick: null,
-    onKeyPress: null
-  };
-
-  state = {
-    active: false,
-    mouse: {},
-    activeStep: {},
-    markerTime: moment().toDate()
-  };
+class GanttRow extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      active: false,
+      mouse: {},
+      activeStep: {},
+      markerTime: moment().toDate()
+    };
+  }
 
   getStepFromTime(time) {
     const { steps, templateName } = this.props;
@@ -129,7 +86,8 @@ export default class GanttRow extends Component {
   }
 
   handleMouseMove(e) {
-    if (this.state.active) {
+    const { active } = this.state;
+    if (active) {
       const { leftBound } = this.context;
       const markerTime = moment(leftBound)
         .add(this.widthToDuration(e.offsetX), 'seconds')
@@ -141,7 +99,7 @@ export default class GanttRow extends Component {
       });
     }
   }
- 
+
   calculateBarStyle(barStyle) {
     barStyle = _.clone(barStyle);
     const margin = this.getMargin(barStyle.margin);
@@ -168,13 +126,13 @@ export default class GanttRow extends Component {
 
   renderPopup() {
     const { popupStyle, title } = this.props;
-    const { activeStep, markerTime, active } = this.state;
+    const { activeStep, markerTime, active, mouse } = this.state;
     if (_.isEmpty(activeStep)) return <div />;
     return (
       <div
         style={{
           position: 'absolute',
-          left: `${this.state.mouse.offsetX}px`,
+          left: `${mouse.offsetX}px`,
           display: active ? 'inherit' : 'none'
         }}
       >
@@ -189,12 +147,10 @@ export default class GanttRow extends Component {
   }
 
   render() {
-    const { title, leftAdornment,  templateName, steps, onClick, onKeyPress, id } = this.props;
+    const { title, leftAdornment, templateName, steps, onClick, onKeyPress, id, barStyle } = this.props;
     // const { active } = this.state;
     const tdStyle = { whiteSpace: 'nowrap' };
-    const { barStyle, barWrapperStyle } = this.calculateBarStyle(
-      this.props.barStyle
-    );
+    const { barStyle: barStyleCalculated, barWrapperStyle } = this.calculateBarStyle(barStyle);
     return (
       <tr style={{ cursor: 'inherit' }}>
         <td
@@ -217,7 +173,7 @@ export default class GanttRow extends Component {
               templateName={templateName}
               steps={steps}
               id={id}
-              style={barStyle}
+              style={barStyleCalculated}
               onClick={onClick}
               onKeyPress={onKeyPress}
             />
@@ -254,3 +210,52 @@ export default class GanttRow extends Component {
     );
   }
 }
+
+GanttRow.propTypes = {
+  barStyle: PropTypes.object,
+  popupStyle: PropTypes.object,
+  // markerStyle: PropTypes.object,
+  steps: PropTypes.array.isRequired,
+  templateName: PropTypes.string,
+  title: PropTypes.string,
+  id: PropTypes.string,
+  leftAdornment: PropTypes.object,
+  onClick: PropTypes.func,
+  onKeyPress: PropTypes.func
+};
+
+GanttRow.contextTypes = {
+  templates: PropTypes.object.isRequired,
+  dateFormat: PropTypes.string.isRequired,
+  leftBound: PropTypes.object.isRequired,
+  rightBound: PropTypes.object.isRequired,
+  timelineWidth: PropTypes.number.isRequired,
+  debug: PropTypes.bool.isRequired
+};
+
+GanttRow.defaultProps = {
+  barStyle: {
+    height: '80px',
+    marginTop: '10px',
+    marginBottom: '10px'
+  },
+  popupStyle: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    padding: '15px',
+    boxShadow: '0px 0px 15px 0px rgba(0,0,0,0.75)',
+    borderRadius: '5px'
+  },
+  id: '',
+  // markerStyle: {
+  //   width: '40px',
+  //   backgroundColor: '#000000',
+  //   opacity: 0.5
+  // },
+  templateName: 'default',
+  title: '',
+  leftAdornment: null,
+  onClick: null,
+  onKeyPress: null
+};
+
+export default GanttRow;
